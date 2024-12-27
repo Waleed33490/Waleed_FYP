@@ -5,14 +5,14 @@ pipeline {
         // Define environment variables
         REMOTE_SERVER = 'ubuntu@54.86.238.1'
         REMOTE_PATH = '/var/www/html'
-        SSH_KEY = credentials('your-ssh-key-id')  // Replace with your Jenkins SSH key ID
+        SSH_KEY = credentials('jenkins-ssh-key')  // Replace with your Jenkins SSH key ID
     }
 
     stages {
         stage('Checkout') {
             steps {
                 // Checkout the code from your Git repository
-                git 'https://github.com/your-repo/your-project.git'  // Replace with your Git repo URL
+                git 'https://github.com/Waleed33490/Waleed_FYP.git'  // Replace with your Git repo URL
             }
         }
 
