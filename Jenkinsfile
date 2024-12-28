@@ -35,7 +35,7 @@ pipeline {
                     echo 'Starting the development server on remote server...'
                     sshagent(['jenkins-ssh-key']) {
                         sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@54.86.238.1 'cd /var/www/html && sudo npm run dev'
+                        ssh -o StrictHostKeyChecking=no ubuntu@3.92.182.253 'cd /var/www/html && sudo npm run dev'
                         """
                     }
                 }
