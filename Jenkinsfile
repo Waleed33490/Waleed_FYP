@@ -28,14 +28,42 @@ pipeline {
             }
         }
 
-        stage('Run Development Server') {
+        stage('Install PM2') {
             steps {
                 script {
-                    // Run the development server on the remote server using SSH
-                    echo 'Starting the development server on remote server...'
+                    // Install PM2 globally on the remote server using SSH
+                    echo 'Installing PM2 on the remote server...'
                     sshagent(['jenkins-ssh-key']) {
                         sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@3.92.182.253 'cd /var/www/html && sudo npm run dev'
+                        ssh -o StrictHostKeyChecking=no ubuntu@3.92.182.253 'sudo npm install -g pm2'
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Run Development Server with PM2') {
+            steps {
+                script {
+                    // Start the development server using PM2 on the remote server
+                    echo 'Starting the development server on remote server with PM2...'
+                    sshagent(['jenkins-ssh-key']) {
+                        sh """
+                        ssh -o StrictHostKeyChecking=no ubuntu@3.92.182.253 'cd /var/www/html && sudo pm2 start npm --name "my-app" -- run dev'
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Save PM2 Process List') {
+            steps {
+                script {
+                    // Save the PM2 process list and configure it to start on boot
+                    echo 'Saving PM2 process list...'
+                    sshagent(['jenkins-ssh-key']) {
+                        sh """
+                        ssh -o StrictHostKeyChecking=no ubuntu@3.92.182.253 'cd /var/www/html && sudo pm2 save && sudo pm2 startup'
                         """
                     }
                 }
@@ -45,7 +73,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Example deployment step (e.g., restart Apache on the remote server)
+                    // Example deployment step: restart Apache on the remote server
                     echo 'Deploying the application on the remote server...'
                     sshagent(['jenkins-ssh-key']) {
                         sh """
