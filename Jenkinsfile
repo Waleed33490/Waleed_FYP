@@ -21,7 +21,7 @@ pipeline {
                     echo 'Installing dependencies on remote server...'
                     sshagent(['jenkins-ssh-key']) {
                         sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@54.86.238.1 'cd /var/www/html && sudo npm install'
+                        ssh -o StrictHostKeyChecking=no ubuntu@3.92.182.253 'cd /var/www/html && sudo npm install'
                         """
                     }
                 }
@@ -49,7 +49,7 @@ pipeline {
                     echo 'Deploying the application on the remote server...'
                     sshagent(['jenkins-ssh-key']) {
                         sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@54.86.238.1 'sudo systemctl restart apache2'
+                        ssh -o StrictHostKeyChecking=no ubuntu@3.92.182.253 'sudo systemctl restart apache2'
                         """
                     }
                 }
